@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 var addressRouter = require('./routes/address');
 var ordersRouter = require('./routes/order');
 var designRouter = require('./routes/design');
+var authRouter = require('./routes/auth');
 
 var app = express();
 
@@ -23,10 +24,30 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/address', addressRouter);
-app.use('/orders', ordersRouter);
-app.use('/design', designRouter);
+app.use('/auth', authRouter);
+app.use('/users',verifyToken, usersRouter);
+app.use('/address',verifyToken, addressRouter);
+app.use('/orders',verifyToken, ordersRouter);
+app.use('/design',verifyToken, designRouter);
+
+function verifyToken(req, res, next) {
+  const bearerHeader = req.headers['authorization'];
+  if (typeof bearerHeader !== 'undefined') {
+    const bearer = bearerHeader.split(' ');
+    const bearerToken = bearer[1];
+    req.token = bearerToken;
+    jwt.verify(bearerToken, 'argons-web-apis', err => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(403);
+      } else {
+        next();
+      }
+    });
+  } else {
+    res.sendStatus(403);
+  }
+}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
