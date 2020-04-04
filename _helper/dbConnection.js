@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('argonw_happyfeet_db', 'argonw_admin', 'knEi2peETejs', {
+const sequelize = new Sequelize('argonw_sharefood_db', 'argonw_admin_sf', 'j=.%ok~4J_Dh', {
   host: 'mysql1006.mochahost.com',
   dialect: 'mysql',
   operatorsAliases: false,
