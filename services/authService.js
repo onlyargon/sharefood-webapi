@@ -16,61 +16,72 @@ module.exports.ValidateUser = async user => {
   });
 
   if (user) {
-    if (user.userType == "Customer") {
-      var profile = await Profile.findOne({
-        where: {
-          userId: user.id,
-          isActive: true,
-          isDeleted: false
-        }
-      });
-
-      if (profile) {
-        var obj = {
-          Code: 0,
-          Message: "Success",
-          Data: profile
-        };
-
-        return obj;
-      } else {
-        var obj = {
-          Code: 1,
-          Message: "User not found!",
-          Data: null
-        };
-
-        return obj;
-      }
+    var passObj = {
+      userId : user.id,
+      username : user.username
     }
+    var obj = {
+      Code: 0,
+      Message: "Success",
+      Data: passObj
+    };
+  
+    return obj;
+    // if (user.userType == "Customer") {
+    //   var profile = await Profile.findOne({
+    //     where: {
+    //       userId: user.id,
+    //       isActive: true,
+    //       isDeleted: false
+    //     }
+    //   });
 
-    if (user.userType == "Company") {
-      var profile = await Company.findOne({
-        where: {
-          userId: user.id,
-          isActive: true,
-          isDeleted: false
-        }
-      });
+    //   if (profile) {
+    //     var obj = {
+    //       Code: 0,
+    //       Message: "Success",
+    //       Data: profile
+    //     };
 
-      if (profile) {
-        var obj = {
-          Code: 0,
-          Message: "Success",
-          Data: profile
-        };
+    //     return obj;
+    //   } else {
+    //     var obj = {
+    //       Code: 1,
+    //       Message: "User not found!",
+    //       Data: null
+    //     };
 
-        return obj;
-      } else {
-        var obj = {
-          Code: 1,
-          Message: "User not found!",
-          Data: null
-        };
+    //     return obj;
+    //   }
+    // }
 
-        return obj;
-      }
-    }
+    // if (user.userType == "Company") {
+    //   var profile = await Company.findOne({
+    //     where: {
+    //       userId: user.id,
+    //       isActive: true,
+    //       isDeleted: false
+    //     }
+    //   });
+
+    //   if (profile) {
+    //     var obj = {
+    //       Code: 0,
+    //       Message: "Success",
+    //       Data: profile
+    //     };
+
+    //     return obj;
+    //   } else {
+    //     var obj = {
+    //       Code: 1,
+    //       Message: "User not found!",
+    //       Data: null
+    //     };
+
+    //     return obj;
+    //   }
+    // }
   }
 
   var obj = {
