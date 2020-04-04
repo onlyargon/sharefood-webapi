@@ -8,6 +8,7 @@ const Address = require("../models/addressModel");
 
 // User
 module.exports.CreateUser = async user => {
+  
   let username = user.basicInfo.username;
   var count = await User.count({
     where: {

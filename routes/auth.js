@@ -20,4 +20,12 @@ router.post('/validate', function(req, res, next) {
   });
 });
 
+
+router.post('/register', function(req, res, next) {
+    _service.CreateUser(req.body)
+    .then(resp =>{
+          res.send(resp);
+    });
+  });
+
 module.exports = router;
