@@ -12,6 +12,8 @@ var addressRouter = require('./routes/address');
 var ordersRouter = require('./routes/order');
 var designRouter = require('./routes/design');
 var authRouter = require('./routes/auth');
+var itemRouter = require('./routes/item');
+var rateRouter = require('./routes/rate');
 
 var app = express();
 app.use(cors());
@@ -31,6 +33,8 @@ app.use('/users',verifyToken, usersRouter);
 app.use('/address',verifyToken, addressRouter);
 app.use('/orders',verifyToken, ordersRouter);
 app.use('/design',verifyToken, designRouter);
+app.use('/item',verifyToken, itemRouter);
+app.use('/rate',verifyToken, rateRouter);
 
 function verifyToken(req, res, next) {
   const bearerHeader = req.headers['authorization'];

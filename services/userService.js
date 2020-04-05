@@ -5,6 +5,8 @@ const User = require("../models/userModel");
 const Company = require("../models/companyModel");
 const Profile = require("../models/profileModel");
 const Address = require("../models/addressModel");
+const Item = require("../models/itemModel");
+const Rate = require("../models/ratingModel");
 
 // User
 module.exports.CreateUser = async user => {
@@ -136,7 +138,62 @@ module.exports.DeleteUser = async user => {
   return obj;
 };
 
-module.exports.GetUsers = async () => {};
+module.exports.GetUserById = async (user) => {
+  var _user = await User.findOne({where : {
+    id : user.userId
+  }});
+
+  if(_user){
+ 
+
+      var items = await Item.findAll({where : {
+        userId : _user.id,
+        isActive : true,
+        isDelete: false
+      }});
+
+      var itemsWithRating = [];
+      if(items){
+      items.forEach( async _item => {
+        var _ratings = await Rate.findAll({where : {
+          itemId : _item.id
+        }});
+
+        var _obj = {
+          item : _item,
+          rating : _ratings
+        }
+
+        itemsWithRating.push(_obj);
+      });
+    }
+
+    var _res = {
+      userInfo : {
+        username : _user.username,
+        joinedDate : _user.createdAt
+      },
+      itemsWithRating
+    }
+
+    var obj = {
+      Code: 0,
+      Message: "Success",
+      Data: _res
+    };
+  
+    return obj;
+
+  }
+
+  var obj = {
+    Code: 1,
+    Message: "Failed",
+    Data: null
+  };
+
+  return obj;
+};
 
 module.exports.ValidateUser = async user => {
   let username = atob(user.networkStatus1);

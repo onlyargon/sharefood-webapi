@@ -23,4 +23,11 @@ router.post('/delete', function(req, res, next) {
   });
 });
 
+router.post('/user-profile-by-id', function(req, res, next) {
+  _service.GetUserById(req.body)
+  .then(resp =>{
+    res.send(resp);
+  });
+});
+
 module.exports = router;
