@@ -26,7 +26,7 @@ module.exports.CreateItem = async obj => {
 module.exports.UpdateItem = async obj => {
   var item = await Item.update(obj, {
     where: {
-      orderNumber: obj.id
+      id: obj.id
     }
   });
 
