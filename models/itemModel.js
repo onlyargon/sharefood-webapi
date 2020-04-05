@@ -10,13 +10,22 @@ const Item = db.seq.define(
       foodType: {
         type: Sequelize.STRING
       },
+      foodName: {
+        type: Sequelize.STRING
+      },
       quantity: {
         type: Sequelize.STRING
       },
       description: {
         type: Sequelize.STRING
       },
+      unitPrice: {
+        type: Sequelize.STRING
+      },
       preparedOn: {
+        type: Sequelize.STRING
+      },
+      expiryDate:{
         type: Sequelize.STRING
       },
       isActive: {
