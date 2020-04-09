@@ -1,4 +1,5 @@
 const Item = require("../models/itemModel");
+const Favorite = require("../models/favoritesModel");
 
 module.exports.CreateItem = async obj => {
 
@@ -161,4 +162,97 @@ module.exports.GetItemsByUserId = async obj => {
   
       return obj;
     }
+};
+
+
+// Favorites
+module.exports.AddFavorite = async obj => {
+
+  var fav = await Favorite.create(obj);
+
+  if (fav) {
+    var obj = {
+      Code: 0,
+      Message: "Success!",
+      Data: fav
+    };
+
+    return obj;
+  } else {
+    var obj = {
+      Code: 1,
+      Message: "Something went wrong!",
+      Data: null
+    };
+
+    return obj;
+  }
+};
+
+module.exports.RemoveFavorite = async obj => {
+
+  var fav = await Favorite.destroy({
+    where :{
+      userId : obj.userId,
+      itemId : obj.itemId
+    }
+  });
+
+  if (fav) {
+    var obj = {
+      Code: 0,
+      Message: "Success!",
+      Data: fav
+    };
+
+    return obj;
+  } else {
+    var obj = {
+      Code: 1,
+      Message: "Something went wrong!",
+      Data: null
+    };
+
+    return obj;
+  }
+};
+
+module.exports.GetFavItemList = async obj => {
+
+  var fav = await Favorite.findAll({
+    where:{
+      userId:obj.userId
+    }
+  });
+
+  var itemList = [];
+  for(const favItem of fav){
+    var item = await Item.findOne({
+      where:{
+        id : favItem.itemId
+      }
+    });
+
+    if(item){
+      itemList.push(item);
+    }
+  };
+
+  if (itemList) {
+    var obj = {
+      Code: 0,
+      Message: "Success!",
+      Data: itemList
+    };
+
+    return obj;
+  } else {
+    var obj = {
+      Code: 1,
+      Message: "Something went wrong!",
+      Data: null
+    };
+
+    return obj;
+  }
 };

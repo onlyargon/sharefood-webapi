@@ -145,16 +145,16 @@ module.exports.GetUserById = async (user) => {
 
   if(_user){
  
-
       var items = await Item.findAll({where : {
         userId : _user.id,
         isActive : true,
-        isDelete: false
-      }});
+        isDeleted: false
+      },
+      attributes: { exclude: ['isActive','isDeleted','createdAt','updatedAt'] }});
 
       var itemsWithRating = [];
       if(items){
-      items.forEach( async _item => {
+      for (const _item of items){
         var _ratings = await Rate.findAll({where : {
           itemId : _item.id
         }});
@@ -165,7 +165,7 @@ module.exports.GetUserById = async (user) => {
         }
 
         itemsWithRating.push(_obj);
-      });
+      };
     }
 
     var _res = {

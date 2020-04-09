@@ -38,4 +38,23 @@ router.post("/get-by-uid", function (req, res, next) {
   });
 });
 
+router.post("/add-fav", function (req, res, next) {
+  _service.AddFavorite(req.body).then((resp) => {
+    res.send(resp);
+  });
+});
+
+router.post("/remove-fav", function (req, res, next) {
+  _service.RemoveFavorite(req.body).then((resp) => {
+    res.send(resp);
+  });
+});
+
+router.post("/fav-item-list", function (req, res, next) {
+  _service.GetFavItemList(req.body).then((resp) => {
+    res.send(resp);
+  });
+});
+
+
 module.exports = router;
