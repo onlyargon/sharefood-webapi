@@ -10,6 +10,9 @@ const Rating = db.seq.define(
       itemId: {
         type: Sequelize.STRING
       },
+      orderId:{
+        type: Sequelize.STRING
+      },
       comment: {
         type: Sequelize.STRING
       },

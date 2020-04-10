@@ -169,7 +169,7 @@ module.exports.GetOrderByUserId = async obj => {
     
     var order = await Order.findAll({
       where: {
-        userId : obj.userId,
+        buyerId : obj.userId,
         isActive: true,
         isDeleted : false,
       }
@@ -198,7 +198,7 @@ module.exports.GetOrderByCompanyId = async obj => {
     
     var order = await Order.findAll({
       where: {
-        comId : obj.comId,
+        sellerId : obj.sellerId,
         isActive: true,
         isDeleted : false,
       }

@@ -28,6 +28,9 @@ const Profile = db.seq.define(
       email: {
         type: Sequelize.STRING
       },
+      level: {
+        type: Sequelize.STRING
+      },
       isActive: {
         type: Sequelize.BOOLEAN,
         defaultValue:true

@@ -4,13 +4,10 @@ const Sequelize = require('sequelize');
 const Order = db.seq.define(
     'order',
     {
-      userId: {
+      buyerId: {
         type: Sequelize.INTEGER
       },
-      comId: {
-        type: Sequelize.INTEGER
-      },
-      designId: {
+      sellerId: {
         type: Sequelize.INTEGER
       },
       orderNumber: {
