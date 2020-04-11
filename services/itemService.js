@@ -1,5 +1,6 @@
 const Item = require("../models/itemModel");
 const Favorite = require("../models/favoritesModel");
+const { Op } = require("sequelize");
 
 module.exports.CreateItem = async obj => {
 
@@ -86,6 +87,9 @@ module.exports.GetAllActiveItem = async obj => {
       where: {
         isActive : true,
         isDeleted : false,
+        expiryDate : {
+          [Op.gt] : new Date()
+        }
       }
     });
   
@@ -106,6 +110,35 @@ module.exports.GetAllActiveItem = async obj => {
   
       return obj;
     }
+};
+
+module.exports.GetItemDetailsByItemId = async obj => {
+    
+  var item = await Item.findOne({
+    where: {
+      id : obj.itemId,
+      isActive : true,
+      isDeleted : false,
+    }
+  });
+
+  if (item) {
+    var obj = {
+      Code: 0,
+      Message: "Success!",
+      Data: item
+    };
+
+    return obj;
+  } else {
+    var obj = {
+      Code: 1,
+      Message: "Something went wrong!",
+      Data: null
+    };
+
+    return obj;
+  }
 };
 
 module.exports.GetAllItem = async obj => {

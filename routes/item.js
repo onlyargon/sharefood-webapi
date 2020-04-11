@@ -32,6 +32,12 @@ router.post("/get-all", function (req, res, next) {
   });
 });
 
+router.post("/get-item-details-by-item-id", function (req, res, next) {
+  _service.GetItemDetailsByItemId(req.body).then((resp) => {
+    res.send(resp);
+  });
+});
+
 router.post("/get-by-uid", function (req, res, next) {
   _service.GetItemsByUserId(req.body).then((resp) => {
     res.send(resp);
