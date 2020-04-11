@@ -6,8 +6,11 @@ const moment = require("moment");
 
 module.exports.CreateItem = async obj => {
 
-  obj.expiryDate = moment(obj.expiryDate, 'YYYY-MM-DD');
-  obj.preparedOn = moment(obj.preparedOn, 'YYYY-MM-DD');
+  var exdate = moment(obj.expiryDate).format("YYYY-MM-DD");
+  var ppdate = moment(obj.preparedOn).format("YYYY-MM-DD");
+
+  obj.expiryDate = exdate;
+  obj.preparedOn = ppdate;
 
   var item = await Item.create(obj);
 
@@ -32,8 +35,11 @@ module.exports.CreateItem = async obj => {
 
 module.exports.UpdateItem = async obj => {
 
-  obj.expiryDate = moment(obj.expiryDate, 'YYYY-MM-DD');
-  obj.preparedOn = moment(obj.preparedOn, 'YYYY-MM-DD');
+  var exdate = moment(obj.expiryDate).format("YYYY-MM-DD");
+  var ppdate = moment(obj.preparedOn).format("YYYY-MM-DD");
+
+  obj.expiryDate = exdate;
+  obj.preparedOn = ppdate;
 
   var item = await Item.update(obj, {
     where: {
@@ -92,12 +98,19 @@ module.exports.DeleteItem = async obj => {
 
 module.exports.GetAllActiveItem = async obj => {
     
+  var date = moment(new Date()).subtract(1, "days");
+  date = date.format("YYYY-MM-DD");
+  console.log('********************')
+  console.log(date);
+  console.log('********************')
+
+
     var item = await Item.findAll({
       where: {
         isActive : true,
         isDeleted : false,
         expiryDate : {
-          [Op.gt] : new Date()
+          [Op.gt] : date
         }
       },
       order: [
