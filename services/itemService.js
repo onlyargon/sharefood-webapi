@@ -2,7 +2,12 @@ const Item = require("../models/itemModel");
 const Favorite = require("../models/favoritesModel");
 const { Op } = require("sequelize");
 
+const moment = require("moment");
+
 module.exports.CreateItem = async obj => {
+
+  obj.expiryDate = moment(obj.expiryDate, 'YYYY-MM-DD');
+  obj.preparedOn = moment(obj.preparedOn, 'YYYY-MM-DD');
 
   var item = await Item.create(obj);
 
@@ -26,6 +31,10 @@ module.exports.CreateItem = async obj => {
 };
 
 module.exports.UpdateItem = async obj => {
+
+  obj.expiryDate = moment(obj.expiryDate, 'YYYY-MM-DD');
+  obj.preparedOn = moment(obj.preparedOn, 'YYYY-MM-DD');
+
   var item = await Item.update(obj, {
     where: {
       id: obj.id
@@ -90,7 +99,10 @@ module.exports.GetAllActiveItem = async obj => {
         expiryDate : {
           [Op.gt] : new Date()
         }
-      }
+      },
+      order: [
+        ['id', 'DESC'],
+      ]
     });
   
     if (item) {
