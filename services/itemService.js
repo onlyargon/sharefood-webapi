@@ -1,11 +1,11 @@
 const Item = require("../models/itemModel");
 const Favorite = require("../models/favoritesModel");
+const User = require("../models/userModel");
 const { Op } = require("sequelize");
 
 const moment = require("moment");
 
-module.exports.CreateItem = async obj => {
-
+module.exports.CreateItem = async (obj) => {
   var exdate = moment(obj.expiryDate).format("YYYY-MM-DD");
   var ppdate = moment(obj.preparedOn).format("YYYY-MM-DD");
 
@@ -18,7 +18,7 @@ module.exports.CreateItem = async obj => {
     var obj = {
       Code: 0,
       Message: "Success!",
-      Data: item
+      Data: item,
     };
 
     return obj;
@@ -26,15 +26,14 @@ module.exports.CreateItem = async obj => {
     var obj = {
       Code: 1,
       Message: "Something went wrong!",
-      Data: null
+      Data: null,
     };
 
     return obj;
   }
 };
 
-module.exports.UpdateItem = async obj => {
-
+module.exports.UpdateItem = async (obj) => {
   var exdate = moment(obj.expiryDate).format("YYYY-MM-DD");
   var ppdate = moment(obj.preparedOn).format("YYYY-MM-DD");
 
@@ -43,15 +42,15 @@ module.exports.UpdateItem = async obj => {
 
   var item = await Item.update(obj, {
     where: {
-      id: obj.id
-    }
+      id: obj.id,
+    },
   });
 
   if (item) {
     var obj = {
       Code: 0,
       Message: "Success!",
-      Data: item
+      Data: item,
     };
 
     return obj;
@@ -59,99 +58,62 @@ module.exports.UpdateItem = async obj => {
     var obj = {
       Code: 1,
       Message: "Something went wrong!",
-      Data: null
+      Data: null,
     };
 
     return obj;
   }
 };
 
-module.exports.DeleteItem = async obj => {
+module.exports.DeleteItem = async (obj) => {
+  obj.isActive = false;
+  obj.isDeleted = true;
 
-    obj.isActive = false;
-    obj.isDeleted = true;
+  var item = await Item.update(obj, {
+    where: {
+      id: obj.id,
+    },
+  });
 
-    var item = await Item.update(obj, {
-      where: {
-        id: obj.id
-      }
-    });
-  
-    if (item) {
-      var obj = {
-        Code: 0,
-        Message: "Success!",
-        Data: item
-      };
-  
-      return obj;
-    } else {
-      var obj = {
-        Code: 1,
-        Message: "Something went wrong!",
-        Data: null
-      };
-  
-      return obj;
-    }
+  if (item) {
+    var obj = {
+      Code: 0,
+      Message: "Success!",
+      Data: item,
+    };
+
+    return obj;
+  } else {
+    var obj = {
+      Code: 1,
+      Message: "Something went wrong!",
+      Data: null,
+    };
+
+    return obj;
+  }
 };
 
-module.exports.GetAllActiveItem = async obj => {
-    
+module.exports.GetAllActiveItem = async (obj) => {
   var date = moment(new Date()).subtract(1, "days");
   date = date.format("YYYY-MM-DD");
-  console.log('********************')
-  console.log(date);
-  console.log('********************')
 
-
-    var item = await Item.findAll({
-      where: {
-        isActive : true,
-        isDeleted : false,
-        expiryDate : {
-          [Op.gt] : date
-        }
-      },
-      order: [
-        ['id', 'DESC'],
-      ]
-    });
-  
-    if (item) {
-      var obj = {
-        Code: 0,
-        Message: "Success!",
-        Data: item
-      };
-  
-      return obj;
-    } else {
-      var obj = {
-        Code: 1,
-        Message: "Something went wrong!",
-        Data: null
-      };
-  
-      return obj;
-    }
-};
-
-module.exports.GetItemDetailsByItemId = async obj => {
-    
-  var item = await Item.findOne({
+  var item = await Item.findAll({
     where: {
-      id : obj.itemId,
-      isActive : true,
-      isDeleted : false,
-    }
+      isActive: true,
+      isDeleted: false,
+      expiryDate: {
+        [Op.gt]: date,
+      },
+    },
+    order: [["id", "DESC"]],
   });
 
   if (item) {
     var obj = {
       Code: 0,
       Message: "Success!",
-      Data: item
+      Data: item,
     };
 
     return obj;
@@ -159,80 +121,110 @@ module.exports.GetItemDetailsByItemId = async obj => {
     var obj = {
       Code: 1,
       Message: "Something went wrong!",
-      Data: null
+      Data: null,
     };
 
     return obj;
   }
 };
 
-module.exports.GetAllItem = async obj => {
+module.exports.GetItemDetailsByItemId = async (obj) => {
+  var item = await Item.findOne({
+    where: {
+      id: obj.itemId,
+      isActive: true,
+      isDeleted: false,
+    },
+  });
+
+  if (item) {
+    var user = await User.findOne({where: {
+      id = item.userId
+    }});
+
+    item.username = user.username;
     
-    var items = await Item.findAll({
-      where: {
-        isDeleted : false,
-      }
-    });
-  
-    if (items) {
-      var obj = {
-        Code: 0,
-        Message: "Success!",
-        Data: items
-      };
-  
-      return obj;
-    } else {
-      var obj = {
-        Code: 1,
-        Message: "Something went wrong!",
-        Data: null
-      };
-  
-      return obj;
-    }
+    var obj = {
+      Code: 0,
+      Message: "Success!",
+      Data: item,
+    };
+
+    return obj;
+  } else {
+    var obj = {
+      Code: 1,
+      Message: "Something went wrong!",
+      Data: null,
+    };
+
+    return obj;
+  }
 };
 
-module.exports.GetItemsByUserId = async obj => {
-    
-    var items = await Item.findAll({
-      where: {
-        userId : obj.userId,
-        isActive: true,
-        isDeleted : false,
-      }
-    });
-  
-    if (items) {
-      var obj = {
-        Code: 0,
-        Message: "Success!",
-        Data: items
-      };
-  
-      return obj;
-    } else {
-      var obj = {
-        Code: 1,
-        Message: "Something went wrong!",
-        Data: null
-      };
-  
-      return obj;
-    }
+module.exports.GetAllItem = async (obj) => {
+  var items = await Item.findAll({
+    where: {
+      isDeleted: false,
+    },
+  });
+
+  if (items) {
+    var obj = {
+      Code: 0,
+      Message: "Success!",
+      Data: items,
+    };
+
+    return obj;
+  } else {
+    var obj = {
+      Code: 1,
+      Message: "Something went wrong!",
+      Data: null,
+    };
+
+    return obj;
+  }
 };
 
+module.exports.GetItemsByUserId = async (obj) => {
+  var items = await Item.findAll({
+    where: {
+      userId: obj.userId,
+      isActive: true,
+      isDeleted: false,
+    },
+  });
+
+  if (items) {
+    var obj = {
+      Code: 0,
+      Message: "Success!",
+      Data: items,
+    };
+
+    return obj;
+  } else {
+    var obj = {
+      Code: 1,
+      Message: "Something went wrong!",
+      Data: null,
+    };
+
+    return obj;
+  }
+};
 
 // Favorites
-module.exports.AddFavorite = async obj => {
-
+module.exports.AddFavorite = async (obj) => {
   var fav = await Favorite.create(obj);
 
   if (fav) {
     var obj = {
       Code: 0,
       Message: "Success!",
-      Data: fav
+      Data: fav,
     };
 
     return obj;
@@ -240,27 +232,26 @@ module.exports.AddFavorite = async obj => {
     var obj = {
       Code: 1,
       Message: "Something went wrong!",
-      Data: null
+      Data: null,
     };
 
     return obj;
   }
 };
 
-module.exports.RemoveFavorite = async obj => {
-
+module.exports.RemoveFavorite = async (obj) => {
   var fav = await Favorite.destroy({
-    where :{
-      userId : obj.userId,
-      itemId : obj.itemId
-    }
+    where: {
+      userId: obj.userId,
+      itemId: obj.itemId,
+    },
   });
 
   if (fav) {
     var obj = {
       Code: 0,
       Message: "Success!",
-      Data: fav
+      Data: fav,
     };
 
     return obj;
@@ -268,39 +259,38 @@ module.exports.RemoveFavorite = async obj => {
     var obj = {
       Code: 1,
       Message: "Something went wrong!",
-      Data: null
+      Data: null,
     };
 
     return obj;
   }
 };
 
-module.exports.GetFavItemList = async obj => {
-
+module.exports.GetFavItemList = async (obj) => {
   var fav = await Favorite.findAll({
-    where:{
-      userId:obj.userId
-    }
+    where: {
+      userId: obj.userId,
+    },
   });
 
   var itemList = [];
-  for(const favItem of fav){
+  for (const favItem of fav) {
     var item = await Item.findOne({
-      where:{
-        id : favItem.itemId
-      }
+      where: {
+        id: favItem.itemId,
+      },
     });
 
-    if(item){
+    if (item) {
       itemList.push(item);
     }
-  };
+  }
 
   if (itemList) {
     var obj = {
       Code: 0,
       Message: "Success!",
-      Data: itemList
+      Data: itemList,
     };
 
     return obj;
@@ -308,7 +298,7 @@ module.exports.GetFavItemList = async obj => {
     var obj = {
       Code: 1,
       Message: "Something went wrong!",
-      Data: null
+      Data: null,
     };
 
     return obj;
