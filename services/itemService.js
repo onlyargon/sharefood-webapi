@@ -139,7 +139,7 @@ module.exports.GetItemDetailsByItemId = async (obj) => {
 
   if (item) {
     var user = await User.findOne({where: {
-      id = item.userId
+      id : item.userId
     }});
 
     item.username = user.username;
