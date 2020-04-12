@@ -142,12 +142,31 @@ module.exports.GetItemDetailsByItemId = async (obj) => {
       id : item.userId
     }});
 
-    item.username = user.username;
+    console.log('********************')
+    console.log(user.username);
+    console.log('********************')
     
+    var response = {
+      "id": item.id,
+        "userId": item.userId,
+        "username":user.username,
+        "foodType": item.foodType,
+        "foodName": item.foodName,
+        "quantity": item.quantity,
+        "description": item.description,
+        "unitPrice": item.unitPrice,
+        "preparedOn": item.preparedOn,
+        "expiryDate": item.expiryDate,
+        "isActive": item.isActive,
+        "isDeleted": item.isDeleted,
+        "createdAt": item.createdAt,
+        "updatedAt": item.updatedAt
+    }
+
     var obj = {
       Code: 0,
       Message: "Success!",
-      Data: item,
+      Data: response,
     };
 
     return obj;
