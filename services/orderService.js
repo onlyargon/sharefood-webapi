@@ -10,7 +10,7 @@ module.exports.CreateOrder = async obj => {
     var obj = {
       Code: 0,
       Message: "Success!",
-      Data: order
+      Data: order.orderNumber
     };
 
     return obj;
@@ -169,7 +169,7 @@ module.exports.GetOrderByUserId = async obj => {
     
     var order = await Order.findAll({
       where: {
-        buyerId : obj.userId,
+        userId : obj.userId,
         isActive: true,
         isDeleted : false,
       }

@@ -4,17 +4,24 @@ const Sequelize = require('sequelize');
 const Order = db.seq.define(
     'order',
     {
-      buyerId: {
+      userId: {
+        type: Sequelize.INTEGER
+      },
+      itemId: {
         type: Sequelize.INTEGER
       },
       sellerId: {
+        type: Sequelize.INTEGER
+      },
+      qty: {
         type: Sequelize.INTEGER
       },
       orderNumber: {
         type: Sequelize.STRING
       },
       orderStatus: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        defaultValue: "Pending"
       },
       isOrderAccepted: {
         type: Sequelize.BOOLEAN,

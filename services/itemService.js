@@ -98,13 +98,15 @@ module.exports.GetAllActiveItem = async (obj) => {
   var date = moment(new Date()).subtract(1, "days");
   date = date.format("YYYY-MM-DD");
 
+  await updateExpiredItems();
+
   var item = await Item.findAll({
     where: {
-      isActive: true,
+      // isActive: true,
       isDeleted: false,
-      expiryDate: {
-        [Op.gt]: date,
-      },
+      // expiryDate: {
+      //   [Op.gt]: date,
+      // },
     },
     order: [["id", "DESC"]],
   });
@@ -138,30 +140,32 @@ module.exports.GetItemDetailsByItemId = async (obj) => {
   });
 
   if (item) {
-    var user = await User.findOne({where: {
-      id : item.userId
-    }});
+    var user = await User.findOne({
+      where: {
+        id: item.userId,
+      },
+    });
 
-    console.log('********************')
+    console.log("********************");
     console.log(user.username);
-    console.log('********************')
-    
+    console.log("********************");
+
     var response = {
-      "id": item.id,
-        "userId": item.userId,
-        "username":user.username,
-        "foodType": item.foodType,
-        "foodName": item.foodName,
-        "quantity": item.quantity,
-        "description": item.description,
-        "unitPrice": item.unitPrice,
-        "preparedOn": item.preparedOn,
-        "expiryDate": item.expiryDate,
-        "isActive": item.isActive,
-        "isDeleted": item.isDeleted,
-        "createdAt": item.createdAt,
-        "updatedAt": item.updatedAt
-    }
+      id: item.id,
+      userId: item.userId,
+      username: user.username,
+      foodType: item.foodType,
+      foodName: item.foodName,
+      quantity: item.quantity,
+      description: item.description,
+      unitPrice: item.unitPrice,
+      preparedOn: item.preparedOn,
+      expiryDate: item.expiryDate,
+      isActive: item.isActive,
+      isDeleted: item.isDeleted,
+      createdAt: item.createdAt,
+      updatedAt: item.updatedAt,
+    };
 
     var obj = {
       Code: 0,
@@ -321,5 +325,35 @@ module.exports.GetFavItemList = async (obj) => {
     };
 
     return obj;
+  }
+};
+
+updateExpiredItems = async () => {
+  var date = moment(new Date()).subtract(1, "days");
+  date = date.format("YYYY-MM-DD");
+
+  var expItemList = await Item.findAll({
+    where: {
+      isActive: true,
+      expiryDate: {
+        [Op.lt]: date,
+      },
+    },
+  });
+
+  console.log(expItemList.count);
+
+  if (expItemList.count > 0) {
+    for (let item of expItemList) {
+      item.isActive = false;
+
+      var iS = await Item.update(item, {
+        where: {
+          id: item.id,
+        },
+      });
+
+      console.log(iS);
+    }
   }
 };
