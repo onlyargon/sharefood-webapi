@@ -147,10 +147,9 @@ module.exports.GetUserById = async (user) => {
  
       var items = await Item.findAll({where : {
         userId : _user.id,
-        isActive : true,
         isDeleted: false
       },
-      attributes: { exclude: ['isActive','isDeleted','createdAt','updatedAt'] }});
+      attributes: { exclude: ['isDeleted','createdAt','updatedAt'] }});
 
       var itemsWithRating = [];
       if(items){

@@ -98,7 +98,7 @@ module.exports.GetAllActiveItem = async (obj) => {
   var date = moment(new Date()).subtract(1, "days");
   date = date.format("YYYY-MM-DD");
 
-  await updateExpiredItems();
+  var val = await updateExpiredItems();
 
   var item = await Item.findAll({
     where: {
@@ -341,19 +341,19 @@ updateExpiredItems = async () => {
     },
   });
 
-  console.log(expItemList.count);
+  console.log(expItemList.length);
 
-  if (expItemList.count > 0) {
+  if (expItemList.length > 0) {
     for (let item of expItemList) {
       item.isActive = false;
-
       var iS = await Item.update(item, {
         where: {
           id: item.id,
         },
       });
-
-      console.log(iS);
+      console.log(item);
     }
   }
+
+  return true;
 };
