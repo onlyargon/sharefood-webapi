@@ -124,6 +124,7 @@ module.exports.GetAllActiveItem = async (obj) => {
   var item = await Item.findAll({
     where: {
       isDeleted: false,
+      isActive: true
     },
     order: [["id", "DESC"]],
   });
