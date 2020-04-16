@@ -98,15 +98,32 @@ module.exports.GetAllActiveItem = async (obj) => {
   var date = moment(new Date()).subtract(1, "days");
   date = date.format("YYYY-MM-DD");
 
-  var val = await updateExpiredItems();
+  var expItemList = await Item.findAll({
+    where: {
+      isActive: true,
+      expiryDate: {
+        [Op.lte]: date,
+      },
+    },
+  });
+
+  console.log(expItemList.length);
+
+  if (expItemList.length > 0) {
+    for (let item of expItemList) {
+
+     await Item.update({isActive : false}, {
+        where: {
+          id: item.id,
+        },
+      });
+      console.log(item);
+    }
+  }
 
   var item = await Item.findAll({
     where: {
-      // isActive: true,
       isDeleted: false,
-      // expiryDate: {
-      //   [Op.gt]: date,
-      // },
     },
     order: [["id", "DESC"]],
   });
@@ -326,34 +343,4 @@ module.exports.GetFavItemList = async (obj) => {
 
     return obj;
   }
-};
-
-updateExpiredItems = async () => {
-  var date = moment(new Date()).subtract(1, "days");
-  date = date.format("YYYY-MM-DD");
-
-  var expItemList = await Item.findAll({
-    where: {
-      isActive: true,
-      expiryDate: {
-        [Op.lt]: date,
-      },
-    },
-  });
-
-  console.log(expItemList.length);
-
-  if (expItemList.length > 0) {
-    for (let item of expItemList) {
-      item.isActive = false;
-      var iS = await Item.update(item, {
-        where: {
-          id: item.id,
-        },
-      });
-      console.log(item);
-    }
-  }
-
-  return true;
 };
