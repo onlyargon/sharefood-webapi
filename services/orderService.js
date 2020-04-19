@@ -1,5 +1,6 @@
 const Order = require("../models/orderModel");
 const Item = require("../models/itemModel");
+// const User = require("../models/companyModel");
 
 module.exports.CreateOrder = async (obj) => {
   var count = await Order.count();
@@ -179,12 +180,15 @@ module.exports.GetOrderByUserId = async (obj) => {
         },
       });
 
+      // var seller = await.
+
       if (item) {
         // console.log("***** hit ***");
         var o = {
           id: ord.id,
           userId: ord.userId,
           itemId: ord.itemId,
+          foodName: item.foodName,
           unitPrice: item.unitPrice,
           sellerId: ord.sellerId,
           qty: ord.qty,
