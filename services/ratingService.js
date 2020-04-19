@@ -26,7 +26,7 @@ module.exports.CreateRate = async obj => {
 module.exports.UpdateRate = async obj => {
   var item = await Rating.update(obj, {
     where: {
-      orderNumber: obj.id
+      id: obj.id
     }
   });
 
@@ -34,7 +34,7 @@ module.exports.UpdateRate = async obj => {
     var obj = {
       Code: 0,
       Message: "Success!",
-      Data: item
+      Data: null
     };
 
     return obj;
