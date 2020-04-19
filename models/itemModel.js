@@ -22,6 +22,9 @@ const Item = db.seq.define(
       unitPrice: {
         type: Sequelize.STRING
       },
+      itemImage: {
+        type: Sequelize.BLOB('long')
+      },
       preparedOn: {
         type: Sequelize.STRING
       },

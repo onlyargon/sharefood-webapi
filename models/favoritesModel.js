@@ -28,6 +28,5 @@ const Favorite = db.seq.define(
     }
   );
   
-  
   Favorite.sync({ force: false });
   module.exports = Favorite;
