@@ -66,27 +66,38 @@ module.exports.CreateUser = async user => {
   }
 };
 
-module.exports.UpdateUser = async user => {
-  var updatedProfile = await Profile.update(user.profile, {
+module.exports.UpdateUser = async (user) => {
+  var usr = await User.findOne({
     where: {
-      userId: user.profile.userId
-    }
+      id: user.basicInfo.userId,
+    },
   });
+
+  if (usr.userType == "HOUSEHOLD") {
+    var updatedProfile = await Profile.update(user.basicInfo, {
+      where: {
+        userId: user.basicInfo.userId,
+      },
+    });
+  } else {
+    var updatedProfile = await Company.update(user.basicInfo, {
+      where: {
+        userId: user.basicInfo.userId,
+      },
+    });
+  }
 
   var updateAddress = await Address.update(user.address, {
     where: {
-      userId: user.address.userId
-    }
+      userId: user.address.userId,
+    },
   });
 
   if (updatedProfile && updateAddress) {
     var obj = {
       Code: 0,
       Message: "User updated!",
-      Data: {
-        userProfile: updatedProfile,
-        userAddress: updateAddress
-      }
+      Data: null,
     };
 
     return obj;
@@ -94,7 +105,7 @@ module.exports.UpdateUser = async user => {
     var obj = {
       Code: 1,
       Message: "Something went wrong!",
-      Data: null
+      Data: null,
     };
 
     return obj;
