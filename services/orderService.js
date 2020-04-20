@@ -1,6 +1,6 @@
 const Order = require("../models/orderModel");
 const Item = require("../models/itemModel");
-// const User = require("../models/companyModel");
+const Rate = require("../models/ratingModel");
 
 module.exports.CreateOrder = async (obj) => {
   var count = await Order.count();
@@ -8,10 +8,16 @@ module.exports.CreateOrder = async (obj) => {
   var order = await Order.create(obj);
 
   if (order) {
+
+    var resObj = {
+      orderId : order.id,
+      orderNumber : order.orderNumber
+    }
+    
     var obj = {
       Code: 0,
       Message: "Success!",
-      Data: order.orderNumber,
+      Data:resObj,
     };
 
     return obj;
@@ -163,22 +169,33 @@ module.exports.GetAllOrders = async (obj) => {
 };
 
 module.exports.GetOrderByUserId = async (obj) => {
+  
   var order = await Order.findAll({
     where: {
       userId: obj.userId,
       isActive: true,
       isDeleted: false,
     },
+    order: [
+      ['id', 'DESC'],
+    ]
   });
 
   if (order) {
     var resObj = [];
     for (let ord of order) {
+
       var item = await Item.findOne({
         where: {
           id: ord.itemId,
         },
       });
+
+      var rate  = await Rate.findOne({
+        where:{
+          orderId : ord.id
+        }
+      })
 
       // var seller = await.
 
@@ -200,6 +217,8 @@ module.exports.GetOrderByUserId = async (obj) => {
           deliverOn: ord.deliverOn,
           isActive: ord.isActive,
           isDeleted: ord.isDeleted,
+          isRated : rate ? true : false,
+          rate : rate ? rate : null
         };
 
         resObj.push(o);
