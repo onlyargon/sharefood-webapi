@@ -195,7 +195,7 @@ module.exports.GetOrderByUserId = async (obj) => {
         where:{
           orderId : ord.id
         }
-      })
+      });
 
       // var seller = await.
 
