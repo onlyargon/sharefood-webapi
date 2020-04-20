@@ -1,6 +1,7 @@
 const Item = require("../models/itemModel");
 const Favorite = require("../models/favoritesModel");
 const User = require("../models/userModel");
+const Rate = require("../models/ratingModel");
 const { Op } = require("sequelize");
 
 const moment = require("moment");
@@ -111,12 +112,14 @@ module.exports.GetAllActiveItem = async (obj) => {
 
   if (expItemList.length > 0) {
     for (let item of expItemList) {
-
-     await Item.update({isActive : false}, {
-        where: {
-          id: item.id,
-        },
-      });
+      await Item.update(
+        { isActive: false },
+        {
+          where: {
+            id: item.id,
+          },
+        }
+      );
       console.log(item);
     }
   }
@@ -124,16 +127,45 @@ module.exports.GetAllActiveItem = async (obj) => {
   var item = await Item.findAll({
     where: {
       isDeleted: false,
-      isActive: true
+      isActive: true,
     },
     order: [["id", "DESC"]],
   });
 
   if (item) {
+    var res = [];
+    for (let i of item) {
+      var fav = await Favorite.findOne({
+        where: {
+          userId: obj.userId,
+          itemId: i.id,
+        },
+      });
+
+      var o = {
+        id: i.id,
+        userId: i.userId,
+        foodType: i.foodType,
+        foodName: i.foodName,
+        quantity: i.quantity,
+        description:i.description,          
+        unitPrice: i.unitPrice,
+        itemImage: i.itemImage,
+        preparedOn: i.preparedOn,
+        expiryDate: i.expiryDate,
+        isActive: i.isActive,
+        isDeleted: i.isDeleted,
+        isFavorite: fav ? true : false,
+        favId : fav?  fav.id : false
+      };
+
+      res.push(o);
+    }
+
     var obj = {
       Code: 0,
       Message: "Success!",
-      Data: item,
+      Data: res,
     };
 
     return obj;
