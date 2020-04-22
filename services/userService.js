@@ -115,6 +115,10 @@ module.exports.GetUserById = async (user) => {
     id : user.userId
   }});
 
+  var prop = await Profile.findOne({where:{
+    userId:_user.id
+  }});
+
   if(_user){
  
       var items = await Item.findAll({where : {
@@ -144,6 +148,7 @@ module.exports.GetUserById = async (user) => {
         username : _user.username,
         joinedDate : _user.createdAt
       },
+      basicInfo: prop,
       itemsWithRating
     }
 
