@@ -48,6 +48,10 @@ module.exports.UpdateRate = async obj => {
 
   var totalRating = number(profile.level)+ (item.starRating/5);
 
+  var _up = await Profile.update({level:totalRating}, {where:{
+    userId:obj.userId
+  }});
+  
   if (item) {
     var obj = {
       Code: 0,
