@@ -46,5 +46,5 @@ const Item = db.seq.define(
   );
   
   
-  Item.sync({ force: true });
+  Item.sync({ force: false });
   module.exports = Item;
