@@ -2,12 +2,6 @@ var express = require('express');
 var router = express.Router();
 const _service = require("../services/userService");
 
-router.post('/validate', function(req, res, next) {
-  _service.ValidateUser(req.body)
-  .then(resp =>{
-    res.send(resp);
-  });
-});
 
 router.post('/create', function(req, res, next) {
   _service.CreateUser(req.body)

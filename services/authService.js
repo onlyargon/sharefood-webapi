@@ -16,7 +16,7 @@ module.exports.ValidateUser = async (user) => {
   });
 
   if (user) {
-    if (user.userType == "HOUSEHOLD") {
+    // if (user.userType == "HOUSEHOLD") {
       var profile = await Profile.findOne({
         where: {
           userId: user.id,
@@ -52,45 +52,45 @@ module.exports.ValidateUser = async (user) => {
 
         return obj;
       }
-    }
+    // }
 
-    if (user.userType == "BUSINESS") {
-      var profile = await Company.findOne({
-        where: {
-          userId: user.id,
-          isActive: true,
-          isDeleted: false,
-        },
-      });
+    // if (user.userType == "BUSINESS") {
+    //   var profile = await Company.findOne({
+    //     where: {
+    //       userId: user.id,
+    //       isActive: true,
+    //       isDeleted: false,
+    //     },
+    //   });
 
-      if (profile) {
-        var passObj = {
-          userId: user.id,
-          username: user.username,
-          isProfileCompleted: true,
-        };
-        var obj = {
-          Code: 0,
-          Message: "Success",
-          Data: passObj,
-        };
+    //   if (profile) {
+    //     var passObj = {
+    //       userId: user.id,
+    //       username: user.username,
+    //       isProfileCompleted: true,
+    //     };
+    //     var obj = {
+    //       Code: 0,
+    //       Message: "Success",
+    //       Data: passObj,
+    //     };
 
-        return obj;
-      } else {
-        var passObj = {
-          userId: user.id,
-          username: user.username,
-          isProfileCompleted: false,
-        };
-        var obj = {
-          Code: 0,
-          Message: "Success",
-          Data: passObj,
-        };
+    //     return obj;
+    //   } else {
+    //     var passObj = {
+    //       userId: user.id,
+    //       username: user.username,
+    //       isProfileCompleted: false,
+    //     };
+    //     var obj = {
+    //       Code: 0,
+    //       Message: "Success",
+    //       Data: passObj,
+    //     };
 
-        return obj;
-      }
-    }
+    //     return obj;
+    //   }
+    // }
   }
 
   var obj = {
