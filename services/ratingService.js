@@ -1,15 +1,21 @@
 const Rating = require("../models/ratingModel");
 const Profile = require("../models/profileModel");
+const Item = require("../models/itemModel");
 
 module.exports.CreateRate = async obj => {
 
   var item = await Rating.create(obj);
 
+  var product = await Item.findOne({
+    where:{
+      id:obj.itemId
+    }
+  })
   var profile = await Profile.findOne({where:{
-    userId:obj.userId
+    userId: product.userId
   }});
 
-  var totalRating = number(profile.level)+ (item.starRating/5);
+  var totalRating = Number(profile.level)+ (item.starRating/5);
 
   var _up = await Profile.update({level:totalRating}, {where:{
     userId:obj.userId
@@ -42,16 +48,21 @@ module.exports.UpdateRate = async obj => {
     }
   });
 
+  var product = await Item.findOne({
+    where:{
+      id:obj.itemId
+    }
+  })
   var profile = await Profile.findOne({where:{
-    userId:obj.userId
+    userId: product.userId
   }});
 
-  var totalRating = number(profile.level)+ (item.starRating/5);
+  var totalRating = Number(profile.level)+ (item.starRating/5);
 
   var _up = await Profile.update({level:totalRating}, {where:{
     userId:obj.userId
   }});
-  
+
   if (item) {
     var obj = {
       Code: 0,
