@@ -23,7 +23,7 @@ const Item = db.seq.define(
         type: Sequelize.STRING
       },
       itemImage: {
-        type: Sequelize.BLOB('long')
+        type: Sequelize.STRING
       },
       preparedOn: {
         type: Sequelize.STRING
@@ -46,5 +46,5 @@ const Item = db.seq.define(
   );
   
   
-  Item.sync({ force: false });
+  Item.sync({ force: true });
   module.exports = Item;
