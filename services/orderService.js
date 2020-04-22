@@ -207,6 +207,7 @@ module.exports.GetOrderByUserId = async (obj) => {
           itemId: ord.itemId,
           foodName: item.foodName,
           unitPrice: item.unitPrice,
+          itemImage: item.itemImage,
           sellerId: ord.sellerId,
           qty: ord.qty,
           orderNumber: ord.orderNumber,

@@ -29,7 +29,7 @@ const Profile = db.seq.define(
         type: Sequelize.STRING
       },
       level: {
-        type: Sequelize.STRING
+        type: Sequelize.DOUBLE
       },
       isActive: {
         type: Sequelize.BOOLEAN,

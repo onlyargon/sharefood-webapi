@@ -1,9 +1,20 @@
 const Rating = require("../models/ratingModel");
+const Profile = require("../models/profileModel");
 
 module.exports.CreateRate = async obj => {
 
   var item = await Rating.create(obj);
 
+  var profile = await Profile.findOne({where:{
+    userId:obj.userId
+  }});
+
+  var totalRating = number(profile.level)+ (item.starRating/5);
+
+  var _up = await Profile.update({level:totalRating}, {where:{
+    userId:obj.userId
+  }});
+  
   if (item) {
     var obj = {
       Code: 0,

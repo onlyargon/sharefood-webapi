@@ -128,6 +128,7 @@ module.exports.GetUserById = async (user) => {
       attributes: { exclude: ['isDeleted','createdAt','updatedAt'] }});
 
       var itemsWithRating = [];
+      
       if(items){
       for (const _item of items){
         var _ratings = await Rate.findAll({where : {
