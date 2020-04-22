@@ -208,6 +208,7 @@ module.exports.GetItemDetailsByItemId = async (obj) => {
       foodName: item.foodName,
       quantity: item.quantity,
       description: item.description,
+      itemImage: item.itemImage,
       unitPrice: item.unitPrice,
       preparedOn: item.preparedOn,
       expiryDate: item.expiryDate,
