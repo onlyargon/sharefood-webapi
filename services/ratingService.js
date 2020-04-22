@@ -35,11 +35,18 @@ module.exports.CreateRate = async obj => {
 };
 
 module.exports.UpdateRate = async obj => {
+
   var item = await Rating.update(obj, {
     where: {
       id: obj.id
     }
   });
+
+  var profile = await Profile.findOne({where:{
+    userId:obj.userId
+  }});
+
+  var totalRating = number(profile.level)+ (item.starRating/5);
 
   if (item) {
     var obj = {
