@@ -41,13 +41,12 @@ module.exports.UpdateUser = async (user) => {
     },
   });
 
-  // if (usr.userType == "Customer") {
+  
     var updatedProfile = await Profile.update(user.basicInfo, {
       where: {
         userId: user.basicInfo.userId,
       },
     });
-  // }
 
   var updateAddress = await Address.update(user.address, {
     where: {
