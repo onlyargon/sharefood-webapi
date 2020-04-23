@@ -119,6 +119,10 @@ module.exports.GetUserById = async (user) => {
     userId:_user.id
   }});
 
+  var address = await Address.findOne({where:{
+    userId:_user.id
+  }})
+
   if(_user){
  
       var items = await Item.findAll({where : {
@@ -150,7 +154,8 @@ module.exports.GetUserById = async (user) => {
         joinedDate : _user.createdAt
       },
       basicInfo: prop,
-      itemsWithRating
+      itemsWithRating,
+      address : address
     }
 
     var obj = {
