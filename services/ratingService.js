@@ -18,7 +18,7 @@ module.exports.CreateRate = async obj => {
   var totalRating = Number(profile.level)+ (item.starRating/5);
 
   var _up = await Profile.update({level:totalRating}, {where:{
-    userId:obj.userId
+    userId:product.userId
   }});
   
   if (item) {
