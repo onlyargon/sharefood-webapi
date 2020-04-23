@@ -15,8 +15,9 @@ module.exports.ValidateUser = async (user) => {
     },
   });
 
+  console.log(user.id);
+
   if (user) {
-    // if (user.userType == "HOUSEHOLD") {
       var profile = await Profile.findOne({
         where: {
           userId: user.id,
@@ -24,6 +25,9 @@ module.exports.ValidateUser = async (user) => {
           isDeleted: false,
         },
       });
+
+  console.log(profile);
+
 
       if (profile) {
         var passObj = {
