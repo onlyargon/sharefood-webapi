@@ -31,6 +31,9 @@ const Item = db.seq.define(
       expiryDate:{
         type: Sequelize.STRING
       },
+      userLocation: {
+        type: Sequelize.STRING,
+      },
       isActive: {
         type: Sequelize.BOOLEAN,
         defaultValue: true

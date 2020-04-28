@@ -105,6 +105,7 @@ module.exports.GetAllActiveItem = async (obj) => {
       expiryDate: {
         [Op.lte]: date,
       },
+    userLocation: obj.userLocation
     },
   });
 

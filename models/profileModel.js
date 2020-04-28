@@ -32,6 +32,9 @@ const Profile = db.seq.define(
         type: Sequelize.DOUBLE,
         defaultValue:0
       },
+      userLocation: {
+        type: Sequelize.STRING,
+      },
       isActive: {
         type: Sequelize.BOOLEAN,
         defaultValue:true

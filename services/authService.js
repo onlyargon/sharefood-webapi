@@ -34,6 +34,7 @@ module.exports.ValidateUser = async (user) => {
           userId: user.id,
           username: user.username,
           isProfileCompleted: true,
+          userLocation: profile.userLocation
         };
         var obj = {
           Code: 0,
@@ -47,6 +48,7 @@ module.exports.ValidateUser = async (user) => {
           userId: user.id,
           username: user.username,
           isProfileCompleted: false,
+          userLocation: null
         };
         var obj = {
           Code: 0,
