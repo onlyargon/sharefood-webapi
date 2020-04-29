@@ -104,8 +104,7 @@ module.exports.GetAllActiveItem = async (obj) => {
       isActive: true,
       expiryDate: {
         [Op.lte]: date,
-      },
-    userLocation: obj.userLocation
+      }
     },
   });
 
@@ -129,6 +128,7 @@ module.exports.GetAllActiveItem = async (obj) => {
     where: {
       isDeleted: false,
       isActive: true,
+      userLocation: obj.userLocation
     },
     order: [["id", "DESC"]],
   });
@@ -155,6 +155,7 @@ module.exports.GetAllActiveItem = async (obj) => {
         preparedOn: i.preparedOn,
         expiryDate: i.expiryDate,
         isActive: i.isActive,
+        userLocation:i.userLocation,
         isDeleted: i.isDeleted,
         isFavorite: fav ? true : false,
         favId : fav?  fav.id : false
