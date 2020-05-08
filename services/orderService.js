@@ -15,7 +15,9 @@ module.exports.CreateOrder = async (obj) => {
     })
 
     var qty = Number(orderPlacedItem.quantity) - Number(obj.qty);
-    var _ = await Item.update({quantity : qty});
+    var _ = await Item.update({quantity:qty},{where:{
+      id:orderPlacedItem.id
+    },});
 
     var resObj = {
       orderId : order.id,

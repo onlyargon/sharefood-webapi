@@ -27,6 +27,7 @@ module.exports.getMonthendSalesReport = async () =>{
                         userId : item.userId,
                         displayName:prof.displayName,
                         foodType:item.foodType,
+                        itemId:item.id,
                         foodName : item.foodName,
                         quantity : item.quantity,
                         description:item.description,
